@@ -1,28 +1,54 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import './assets/css/index.css';
+import './assets/css/base.css';
+import  Header from './ccomponents/Header';
+import  TodoList from './ccomponents/TodoList';
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from './actions/actions';
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <section className="todoapp">
+        <Header />
+        {/* This section should be hidden by default and shown when there are todos */}
+        <section className="main">
+          { 
+            this.props.todos.length > 0?
+               <input className="toggle-all" type="checkbox" onChange={this.props.toggleAll}/> : ''
+          }
+          <label htmlFor="toggle-all" >Mark all as complete</label>
+          <TodoList />
+        </section>
+        { /* This footer should hidden by default and shown when there are todos */}
+        { 
+          this.props.todos.length > 0?
+            <footer className="footer">
+              { /*This should be `0 items left` by default */}
+              <span className="todo-count"><strong>{this.props.todos.filter((todo) => !todo.isCompleted).length}</strong> item left</span>
+              { /*Remove this if you don't implement routing*/}
+              <ul className="filters">
+                <li>
+                  <a className="selected" href="#/">All</a>
+                </li>
+                <li>
+                  <a href="#/active">Active</a>
+                </li>
+                <li>
+                  <a href="#/completed">Completed</a>
+                </li>
+              </ul>
+              {/* Hidden if no completed items are left */}
+              <button className="clear-completed">Clear completed</button>
+            </footer>
+            :
+            ''
+        }
+      </section>
     );
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
