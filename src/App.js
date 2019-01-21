@@ -4,6 +4,7 @@ import './assets/css/index.css';
 import './assets/css/base.css';
 import  Header from './ccomponents/Header';
 import  TodoList from './ccomponents/TodoList';
+import  Filter from './ccomponents/Filter';
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from './actions/actions';
 
@@ -27,21 +28,11 @@ class App extends Component {
           this.props.todos.length > 0?
             <footer className="footer">
               { /*This should be `0 items left` by default */}
-              <span className="todo-count"><strong>{this.props.todos.filter((todo) => !todo.isCompleted).length}</strong> item left</span>
+              <span className="todo-count"><strong>{this.props.todos.filter(todo => !todo.isCompleted).length}</strong> item left</span>
               { /*Remove this if you don't implement routing*/}
-              <ul className="filters">
-                <li>
-                  <a className="selected" href="#/">All</a>
-                </li>
-                <li>
-                  <a href="#/active">Active</a>
-                </li>
-                <li>
-                  <a href="#/completed">Completed</a>
-                </li>
-              </ul>
+              <Filter />
               {/* Hidden if no completed items are left */}
-              <button className="clear-completed">Clear completed</button>
+              <button className="clear-completed" onClick={this.props.removeAllCompleted}>Clear completed</button>
             </footer>
             :
             ''

@@ -4,7 +4,8 @@ const initialState = {
   title: 'TodoMVC',
   placeholder: 'What needs to be done?',
   todos: [],
-  newTodoStr: '',
+  filterCondition: 'all',
+  newTodoStr: ''
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +16,7 @@ export default (state = initialState, action) => {
       cloneState.todos.push({
         id: cloneState.todos.length,
         isCompleted: false,
+        isEditing: false,
         todoNm:action.newTodo}
       );
       cloneState.newTodoStr = '';
@@ -34,6 +36,24 @@ export default (state = initialState, action) => {
     case 'TOGGLE_ALL':
       cloneState.todos = state.todos.map(todo => ({...todo, isCompleted: action.isCompleted}));
       return cloneState;
+    case 'REMOVE_ALL_COMPLETED':
+      cloneState.todos = state.todos.filter(todo => !todo.isCompleted);
+      return cloneState;
+    case 'GO_EDITING':
+      cloneState.todos = state.todos.map(todo => action.todo.id === todo.id? {...todo, isEditing: true} : todo);
+      return cloneState;
+    case 'CHANGE_TODO_NM':
+      cloneState.todos = state.todos.map(todo => action.todo.id === todo.id? action.todo : todo);
+      return cloneState;
+    case 'BACK_TO_VIEW':
+      cloneState.todos = state.todos.map(todo => action.todo.id === todo.id? action.todo : todo);
+      return cloneState;
+    case 'CHANGE_FILTER':
+      cloneState.filterCondition = action.filterCondition;
+      return cloneState;      
+
+
+
     default:
       return state;
   }

@@ -36,7 +36,41 @@ function mapDispatchToProps(dispatch) {
         type: 'DELETE_TODO',
         todo: todo,
       });
-    }
+    },
+    removeAllCompleted: () => {
+      dispatch({
+        type: 'REMOVE_ALL_COMPLETED',
+      });
+    },
+    goEditing: (todo) => {
+      dispatch({
+        type: 'GO_EDITING',
+        todo: todo,
+      });
+    },
+    changeTodoNm: (event, todo) => {
+      todo.todoNm = event.target.value;
+      dispatch({
+        type: 'CHANGE_TODO_NM',
+        todo: todo,
+      });
+    },
+    backToView: (event, todo, enter) => {
+      if(!enter || event.keyCode === 13){
+        todo.isEditing = false;
+        dispatch({
+          type: 'BACK_TO_VIEW',
+          todo: todo,
+        });
+      }
+    },
+    changeFilter: (filterCondition) => {
+      dispatch({
+        type: 'CHANGE_FILTER',
+        filterCondition: filterCondition,
+      });
+      
+    },    
   };
 }
 export { mapDispatchToProps, mapStateToProps };
